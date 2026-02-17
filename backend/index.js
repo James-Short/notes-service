@@ -1,17 +1,13 @@
 import "./db/db.js"
-import { createUser } from "./db/queries.js";
 import express from "express";
+
+import userRouter from "./routes/users.js";
 
 const app = express();
 app.use(express.json());
 
+app.use("/users", userRouter)
 
-app.post('/test', (req, res) => {
-    const { username, email, password } = req.body;
-    createUser(username, email, password);
-
-    
-})
 
 app.listen(8080, () => {
     console.log("Backend running on port 8080");

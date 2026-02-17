@@ -1,16 +1,21 @@
 import { execute, fetchAll, fetchOne } from "./db.js";
 import argon2 from "argon2";
 
-
-export async function createUser(username, email, password){
+export async function checkEmailExists(email){
     const row = await fetchOne(
         `SELECT EXISTS (
             SELECT 1 FROM users WHERE email = ?
-         ) AS exists`,
+         ) AS user_exists`,
          [email]
     )
+    return(row.user_exists === 1);
+}
 
-    if(row.exists === 1){
+
+export async function createUser(username, email, password){
+    const emailExists = await checkEmailExists(email);
+
+    if(emailExists){
         throw new Error("EMAIL_ALREADY_EXISTS");
     }
     else{
@@ -23,4 +28,24 @@ export async function createUser(username, email, password){
              [username, email, hashedPassword]
         )
     }
+}
+
+export async function userSignIn(email, password){
+    const emailExists = await checkEmailExists(email);
+
+    if(emailExists === 0){
+        throw new Error("Email or password is incorrect");
+    }
+    else{
+        const row = await fetchOne(
+        `SELECT * FROM users WHERE email = ? LIMIT 1;`,
+        [email]
+    )
+    const passwordsMatch = await argon2.verify(row.password_hash, password);
+    if(!passwordsMatch){
+        throw new Error("Email or password is incorrect");
+    }
+
+    }
+    
 }
