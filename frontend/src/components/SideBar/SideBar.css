@@ -1,0 +1,52 @@
+
+.side-bar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 3px solid #dddddd;
+    height: 100%;
+    width: 15%;
+    min-width: 280px;
+    scrollbar-width: none;
+}
+
+.side-bar::-webkit-scrollbar{
+    display: none;
+}
+
+.notes-header{
+    margin-top: 10%;
+    margin-bottom: 20%;
+    font-size: 300%;
+    color: rgb(0, 0, 0);
+}
+
+.new-note-button{
+    height: 6%;
+    aspect-ratio: 1/1;
+    margin-bottom: 12%;
+    border: none;
+    border-radius: 20px;
+    background-color: #fec252;
+    font-size: 350%;
+    color: white;
+}
+
+.new-note-button:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.new-note-button:active{
+    scale: 0.85;
+}
+
+.note-button-holder{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    overflow-x: scroll;
+    border-radius: 15px;
+}

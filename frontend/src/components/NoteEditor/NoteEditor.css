@@ -1,0 +1,38 @@
+.note-editor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    flex-grow: 1;
+}
+
+.note-title{
+    font-size: 500%;
+    max-height: 20%;
+    margin-top: 2%;
+    border: 0;
+    text-overflow: clip;
+    text-align: center;
+    resize: none;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.note-title:focus{
+    color: rgb(120, 119, 119);
+    outline: none;
+}
+
+.note-input{
+    height: 70%;
+    width: 80%;
+    margin-top: auto;
+    resize: none;
+    font-size: 200%;
+    word-wrap: break-word;
+    border: none;
+}
+
+.note-input:focus{
+    outline: none;
+}

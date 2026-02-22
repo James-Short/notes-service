@@ -1,0 +1,89 @@
+
+.login-page-container{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 1%;
+}
+
+.login-input-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 695;
+    height: 65%;
+    aspect-ratio: 1/1.3;
+    margin-top: 0.5;
+    align-self: center;
+    border-radius: 25px;
+    padding: 2%;
+    border: 3px solid lightgrey;
+}
+
+.login-input-header{
+    font-size: 250%;
+    margin-bottom: 25%;
+}
+
+.login-input{
+    height: 10%;
+    width: 85%;
+    border-radius: 50px;
+    margin-bottom: 15%;
+    font-size: 110%;
+    padding-left: 4%;
+    border: 3px solid lightgrey;
+}
+
+
+.login-input:focus{
+    outline: none;
+    border: 3px solid #0575e6;
+}
+
+.login-submit-button{
+    width: 50%;
+    height: 10%;
+    border-radius: 50px;
+    border: none;
+    background-color: #0575e6;
+    color: white;
+    font-size: 130%;
+}
+
+.login-submit-button:hover{
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.login-submit-button:active{
+    opacity: 0.55;
+    scale: 0.95;
+}
+
+.signup-redirect-button{
+    top: 1%;
+    right: 1%;
+    position: absolute;
+    height: 4%;
+    aspect-ratio: 2.5/1;
+    border-radius: 15px;
+    border: none;
+    background-color: #0575e6;
+    color: white;
+    font-size: 110%;
+}
+
+.signup-redirect-button:hover{
+    cursor: pointer;
+    opacity: 0.95;
+}
+
+.signup-redirect-button:active{
+    opacity: 0.75;
+    scale: 0.95;
+}

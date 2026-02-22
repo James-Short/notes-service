@@ -49,3 +49,26 @@ export async function userSignIn(email, password){
     }
     
 }
+
+export async function createCookie(email){
+    const row = await fetchOne(
+        `SELECT * FROM users WHERE email = ? LIMIT 1;`,
+        [email]
+    )
+
+    if(row){
+        const currentDate = new Date();
+        let cookieValue = row.id + "" + currentDate.getDate() + currentDate.getHours() + currentDate.getMinutes();
+        for(let i = 0; i < 50; i++){
+            cookieValue += Math.floor(Math.random() * 10);
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+        await execute(
+            `INSERT INTO cookies (user_id, cookie_value, expires)
+             VALUES(?, ?, ?)`,
+             [row.id, cookieValue, currentDate]
+        )
+        
+        return cookieValue;
+    }
+}
