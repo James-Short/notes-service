@@ -1,4 +1,4 @@
-import { createCookie, createUser, userSignIn } from "../db/queries.js";
+import { createCookie, createUser, userSignIn, getUserNoteListByCookie } from "../db/queries.js";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -6,12 +6,10 @@ import cors from "cors";
 
 
 const router = express.Router();
-router.use(cookieParser());
-router.use(cors({origin: 'http://localhost:5173', credentials: true}));
 
 router.post('/createUser', (req, res) => {
     const { username, email, password } = req.body;
-    createUser(username, email, password)
+    createUser(username, email.toLowerCase(), password)
      .then(() => {
         res.status(201).send();
      })
@@ -22,11 +20,10 @@ router.post('/createUser', (req, res) => {
 
 router.post('/signIn', (req, res) => {
     const { email, password } = req.body;
-    userSignIn(email, password)
+    userSignIn(email.toLowerCase(), password)
     .then(() => {
        createCookie(email)
        .then((value) => {
-          console.log(value);
           res.cookie("user-cookie", value, {
             maxAge: 86400000,
             httpOnly: true,
@@ -42,9 +39,17 @@ router.post('/signIn', (req, res) => {
 })
 
 router.get('/getUserHomepage', (req, res) => {
-   console.log("Something happened");
-   console.log(req.cookies);
-   res.status(200).send();
+   const userCookie = req.cookies['user-cookie'];
+   if(!userCookie){
+      res.status(422).send();
+   }
+
+   const userNoteList = getUserNoteListByCookie(userCookie);
+   if(!userNoteList)
+      res.status(404).send();
+   if(userNoteList.length === 0)
+      res.status().send();
+   res.status(200).send(userNoteList);
 })
 
 export default router;

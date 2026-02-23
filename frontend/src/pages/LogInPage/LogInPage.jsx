@@ -10,8 +10,6 @@ function LogInPage(){
     const [passwordInput, setPasswordInput] = useState("");
 
     function submitLoginInfo(){
-        setEmailInput("");
-        setPasswordInput("");
         axios.post('http://localhost:8080/users/signIn', {
             email: emailInput,
             password: passwordInput
@@ -22,7 +20,9 @@ function LogInPage(){
             else
                 alert("Email or password is incorrect");
         })
-        .catch(err => {alert("test")})
+        .catch(err => {alert("Some error occured")})
+        setEmailInput("");
+        setPasswordInput("");
     }
 
     return(

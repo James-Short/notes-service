@@ -72,3 +72,19 @@ export async function createCookie(email){
         return cookieValue;
     }
 }
+
+export async function getUserNoteListByCookie(cookieValue){
+    const userID = await fetchOne(
+        `SELECT user_id FROM cookies WHERE cookie_value = ?`,
+        [cookieValue]
+    )
+
+    if(userID){
+        const notes = await fetchAll(
+            `SELECT id, title FROM notes WHERE user_id = ?`,
+            [userID]
+        );
+        return notes
+    }
+
+}
