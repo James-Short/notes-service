@@ -33,7 +33,7 @@ export async function createUser(username, email, password){
 export async function userSignIn(email, password){
     const emailExists = await checkEmailExists(email);
 
-    if(emailExists === 0){
+    if(emailExists != 1){
         throw new Error("Email or password is incorrect");
     }
     else{
@@ -41,6 +41,7 @@ export async function userSignIn(email, password){
         `SELECT * FROM users WHERE email = ? LIMIT 1;`,
         [email]
     )
+
     const passwordsMatch = await argon2.verify(row.password_hash, password);
     if(!passwordsMatch){
         throw new Error("Email or password is incorrect");
@@ -73,11 +74,17 @@ export async function createCookie(email){
     }
 }
 
-export async function getUserNoteListByCookie(cookieValue){
-    const userID = await fetchOne(
+export async function getUserIDByCookie(cookieValue){
+    const row = await fetchOne(
         `SELECT user_id FROM cookies WHERE cookie_value = ?`,
         [cookieValue]
-    )
+    );
+
+    if(row)
+        return row.user_id;
+}
+
+export async function getUserNoteListByID(userID){
 
     if(userID){
         const notes = await fetchAll(
@@ -87,4 +94,70 @@ export async function getUserNoteListByCookie(cookieValue){
         return notes
     }
 
+}
+
+export async function createNote(noteTitle, noteContents, userID){
+    console.log(userID);
+    if(!userID){
+        return;
+    }
+    if(!noteTitle || noteTitle.length <= 0)
+        noteTitle = "Blank title";
+
+    await execute(
+        `INSERT INTO notes (user_id, title, contents)
+        Values (?, ?, ?)`,
+        [userID, noteTitle, noteContents]
+    );
+
+
+}
+
+export async function checkCookieExistence(cookieValue){
+    const row = await fetchOne(
+        `SELECT user_id FROM cookies WHERE cookie_value = ?`,
+        [cookieValue]
+    );
+    if(row){
+        return true;
+    }
+    return false;
+}
+
+export async function verifyNoteOwnership(noteId, userId){
+    const row = await fetchOne(
+        'SELECT * FROM notes WHERE id = ? AND user_id = ?',
+        [noteId, userId]
+    );
+    if(row)
+        return true;
+    return false;
+}
+
+export async function updateNoteTitle(noteId, noteTitle){
+    await execute(
+        `UPDATE notes
+        SET title = ?
+        WHERE id = ?`,
+        [noteTitle, noteId]
+    )
+}
+
+export async function updateNoteContent(noteId, noteContent){
+    await execute(
+        `UPDATE notes
+        SET contents = ?
+        WHERE id = ?`,
+        [noteContent, noteId]
+    )
+}
+
+export async function getNote(noteId){
+    const row = await fetchOne(
+        `SELECT title, contents
+        FROM notes
+        WHERE id = ?`, 
+        [noteId]
+    )
+    return row;
 }

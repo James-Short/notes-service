@@ -11,11 +11,11 @@ function App() {
     <Routes>
       <Route path="/" element={<HomeLayout/>}>
         <Route path="" element={<OpenNotePrompt/>}/>
-        <Route path="note" element={<NoteEditor/>}/>
+        <Route path="note/:id" element={<NoteEditor/>}/>
       </Route>
       <Route path="/logIn" element={<LogInPage/>}/>
       <Route path="/signUp" element={<SignUpPage/>}/>
-      <Route path="*"  element={<Navigate to="/" replace />}/>
+      <Route path="/*" element={<Navigate to="/" replace />}/>
     </Routes>
   )
 }
